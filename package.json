@@ -1,0 +1,53 @@
+{
+  "name": "anime",
+  "version": "0.0.0",
+  "description": "Anime video",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Eric Manalich Cossio"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EricMannalich/anime.git"
+  },
+  "bugs": {
+    "url": "https://github.com/EricMannalich/anime/issues"
+  },
+  "homepage": "https://ericmannalich.github.io/anime/",
+  "keywords": [
+    "anime",
+    "react"
+  ],
+  "dependencies": {
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
+    "@mui/icons-material": "latest",
+    "@mui/material": "latest",
+    "@mui/styled-engine": "latest",
+    "@mui/styled-engine-sc": "latest",
+    "html2canvas": "latest",
+    "react": "latest",
+    "react-window": "latest"
+  },
+  "scripts": {
+    "start": "webpack --mode development --watch",
+    "test": "webpack --mode development",
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "@babel/core": "latest",
+    "@babel/plugin-transform-class-properties": "latest",
+    "@babel/preset-env": "latest",
+    "@babel/preset-react": "latest",
+    "babel-loader": "latest",
+    "copy-webpack-plugin": "latest",
+    "css-loader": "latest",
+    "dotenv": "latest",
+    "html-webpack-plugin": "latest",
+    "style-loader": "latest",
+    "terser-webpack-plugin": "latest",
+    "webpack": "latest",
+    "webpack-cli": "latest"
+  }
+}

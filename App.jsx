@@ -3,10 +3,23 @@ import MyAppBar from "./components/MyAppBar";
 import AnimeList from "./components/AnimeList";
 
 function App() {
-  const [entry, setEntry] = React.useState("");
+  // Lee el valor inicial de localStorage
+  const [entry, setEntry] = React.useState(
+    // ""
+    () => {
+      return localStorage.getItem("lastEntry") || "";
+    }
+  );
+
+  // Función intermediaria para guardar y actualizar entry
+  const handleEntryChange = (value) => {
+    localStorage.setItem("lastEntry", value);
+    setEntry(value);
+  };
+
   return (
     <>
-      <MyAppBar setEntry={setEntry} />
+      <MyAppBar entry={entry} setEntry={handleEntryChange} />
       <AnimeList entry={entry} />
     </>
   );

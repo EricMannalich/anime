@@ -107,14 +107,14 @@ const CardItem = ({
                 component="div"
                 sx={{ height: "18px", overflow: "hidden", flexGrow: 1 }}
               >
-                Episodes: {episodes}
+                {episodes} Ep
               </Typography>
               <Typography
                 variant="body2"
                 component="div"
                 sx={{ height: "18px", overflow: "hidden", flexGrow: 0 }}
               >
-                Release: {getSeason(date)}
+                {getSeason(date)}
               </Typography>
             </Box>
           </CardContent>

@@ -10,12 +10,13 @@ module.exports = (env, argv) => {
   const outputPath = ""; //isProduction ? "./dist" : "./dev";
   const projectName = packageJson.name || "main";
   const projectTitle = packageJson.title || projectName;
+  const version = packageJson.version || "0.0.0";
   const projectDescription = packageJson.description || projectName;
   return {
     entry: "./index.jsx",
     output: {
       path: path.resolve(__dirname, outputPath),
-      filename: `${projectName}.js`,
+      filename: `${projectName}_v${version}.js`,
     },
     resolve: {
       extensions: ["", ".js", ".jsx"],
@@ -78,6 +79,7 @@ module.exports = (env, argv) => {
         "process.env.TRAINING": JSON.stringify(!isProduction),
         "process.env.PROJECT_NAME": JSON.stringify(projectName),
         "process.env.PROJECT_TITLE": JSON.stringify(projectTitle),
+        "process.env.VERSION": JSON.stringify(version),
         "process.env.PROJECT_DESCRIPTION": JSON.stringify(projectDescription),
       }),
       // new CopyWebpackPlugin({

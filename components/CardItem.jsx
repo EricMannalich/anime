@@ -24,7 +24,7 @@ function getSeason(dateStr) {
 
 const CardItem = ({
   id = 0,
-  image = "/media/none.png",
+  image = "",
   name = "",
   genre = [],
   date = "",
@@ -38,8 +38,8 @@ const CardItem = ({
       sx={{
         height: imageSize,
         margin: 1,
-        border: selected === id ? "2px solid #1976d2" : "1px solid #444",
-        boxShadow: selected === id ? "0 0 8px #1976d2" : "none",
+        border: selected === id ? "2px solid #d24719ff" : "1px solid #444",
+        boxShadow: selected === id ? "0 0 8px #d24719ff" : "none",
         backgroundColor:
           selected === id ? "action.selected" : "background.paper",
         transition: "all 0.2s",
@@ -73,7 +73,7 @@ const CardItem = ({
             <Typography
               variant="subtitle1"
               component="div"
-              sx={{ height: "22px", overflow: "hidden" }}
+              sx={{ height: "25px", overflow: "hidden", marginTop: -0.5 }}
             >
               {name}
             </Typography>

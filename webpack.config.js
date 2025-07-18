@@ -2,12 +2,12 @@ const path = require("path");
 const webpack = require("webpack");
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+// const CopyWebpackPlugin = require("copy-webpack-plugin");
 const packageJson = require("./package.json");
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === "production";
-  const outputPath = isProduction ? "./dist" : "./dev";
+  const outputPath = ""; //isProduction ? "./dist" : "./dev";
   const projectName = packageJson.name || "main";
   const projectTitle = packageJson.title || projectName;
   const projectDescription = packageJson.description || projectName;
@@ -80,20 +80,20 @@ module.exports = (env, argv) => {
         "process.env.PROJECT_TITLE": JSON.stringify(projectTitle),
         "process.env.PROJECT_DESCRIPTION": JSON.stringify(projectDescription),
       }),
-      new CopyWebpackPlugin({
-        patterns: [
-          {
-            from: "favicon.png",
-            to: path.resolve(__dirname, outputPath),
-            noErrorOnMissing: true,
-          },
-          {
-            from: "logo.png",
-            to: path.resolve(__dirname, outputPath),
-            noErrorOnMissing: true,
-          },
-        ],
-      }),
+      // new CopyWebpackPlugin({
+      //   patterns: [
+      //     {
+      //       from: "favicon.png",
+      //       to: path.resolve(__dirname, outputPath),
+      //       noErrorOnMissing: true,
+      //     },
+      //     {
+      //       from: "logo.png",
+      //       to: path.resolve(__dirname, outputPath),
+      //       noErrorOnMissing: true,
+      //     },
+      //   ],
+      // }),
     ],
   };
 };

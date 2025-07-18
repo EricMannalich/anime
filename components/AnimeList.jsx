@@ -1,6 +1,6 @@
 import React from "react";
 import CardItem from "./CardItem";
-import animes from "../data/anime_db.json";
+import animes from "../anime_db.json";
 import YouTubeVideo from "./YouTubeVideo";
 import Box from "@mui/material/Box";
 import { FixedSizeList as List } from "react-window";

@@ -55,7 +55,7 @@ const CardItem = ({
               objectFit: "contain",
               flexShrink: 0,
             }}
-            image={"../" + image}
+            image={image}
             alt={name}
           />
           <CardContent

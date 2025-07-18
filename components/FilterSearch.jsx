@@ -29,6 +29,13 @@ export default function FilterSearch(entry = "") {
   const filteredAnimes = React.useMemo(() => {
     if (!search) return animes;
 
+    // Filtro especial: si la búsqueda es una sola letra o número
+    if (/^[a-z0-9]$/i.test(search)) {
+      return animes.filter((anime) =>
+        anime.name?.toLowerCase().startsWith(search)
+      );
+    }
+
     // Filtro especial para episodios
     if (moreMatch) {
       const min = parseInt(moreMatch[1], 10);

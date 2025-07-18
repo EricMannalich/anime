@@ -2,24 +2,39 @@ import React, { useRef, useEffect } from "react";
 import CardItem from "./CardItem";
 import YouTubeVideo from "./YouTubeVideo";
 import FilterSearch from "./FilterSearch";
+import OrderSearch from "./OrderSearch";
+import MySpeedDial from "./MySpeedDial";
 import Box from "@mui/material/Box";
+import Fab from "@mui/material/Fab";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Zoom from "@mui/material/Zoom";
 import { FixedSizeList as List } from "react-window";
+import useListScrollTrigger from "./useListScrollTrigger";
 
 export default function AnimeList({ entry = "" }) {
   const [selectedAnime, setSelectedAnime] = React.useState(() => {
     return localStorage.getItem("selectedAnime") || null;
   });
+  const [sortKey, setSortKey] = React.useState(null);
+  const [sortOrder, setSortOrder] = React.useState("asc");
 
   const listRef = useRef();
+  const showScrollButton = useListScrollTrigger(listRef);
 
   // Filtra los animes según la entrada
   const filteredAnimes = FilterSearch(entry);
-  const selected = filteredAnimes.find((a) => a.id === selectedAnime);
+
+  const sortedAnimes = OrderSearch({
+    filteredAnimes,
+    sortKey,
+    sortOrder,
+  });
+  const selected = sortedAnimes.find((a) => a.id === selectedAnime);
 
   // Scroll suave al seleccionar un anime
   useEffect(() => {
     if (selectedAnime && listRef.current) {
-      const index = filteredAnimes.findIndex((a) => a.id === selectedAnime);
+      const index = sortedAnimes.findIndex((a) => a.id === selectedAnime);
       if (index >= 0) {
         // Calcula la posición del item
         const itemSize = 140; // Debe coincidir con el valor de itemSize en List
@@ -34,7 +49,7 @@ export default function AnimeList({ entry = "" }) {
         }
       }
     }
-  }, [selectedAnime, filteredAnimes]);
+  }, [selectedAnime, sortedAnimes]);
 
   // Guarda el anime seleccionado en localStorage cada vez que cambia
   React.useEffect(() => {
@@ -44,18 +59,18 @@ export default function AnimeList({ entry = "" }) {
   }, [selectedAnime]);
 
   // Encuentra el índice del anime seleccionado
-  const selectedIndex = filteredAnimes.findIndex((a) => a.id === selectedAnime);
+  const selectedIndex = sortedAnimes.findIndex((a) => a.id === selectedAnime);
 
   // Función para seleccionar el siguiente anime
   const handleVideoEnded = () => {
-    if (selectedIndex >= 0 && selectedIndex < filteredAnimes.length - 1) {
-      setSelectedAnime(filteredAnimes[selectedIndex + 1].id);
+    if (selectedIndex >= 0 && selectedIndex < sortedAnimes.length - 1) {
+      setSelectedAnime(sortedAnimes[selectedIndex + 1].id);
     }
   };
 
   // Renderiza cada fila de la lista virtualizada
   const Row = ({ index, style }) => {
-    const anime = filteredAnimes[index];
+    const anime = sortedAnimes[index];
     return (
       <div style={style} key={anime.id}>
         <CardItem
@@ -73,9 +88,22 @@ export default function AnimeList({ entry = "" }) {
     );
   };
 
+  const scrollToTop = () => {
+    if (listRef.current) {
+      const listElement = listRef.current._outerRef;
+      if (listElement) {
+        listElement.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     setSelectedAnime(null);
-  }, [entry]);
+    scrollToTop();
+  }, [sortedAnimes]);
 
   return (
     <Box sx={{ maxWidth: 1000, margin: "auto" }}>
@@ -85,12 +113,28 @@ export default function AnimeList({ entry = "" }) {
       <List
         ref={listRef}
         height={window.innerHeight - 100}
-        itemCount={filteredAnimes.length}
+        itemCount={sortedAnimes.length}
         itemSize={140}
         width={"100%"}
       >
         {Row}
       </List>
+      <MySpeedDial
+        sortKey={sortKey}
+        setSortKey={setSortKey}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
+      <Zoom in={showScrollButton}>
+        <Fab
+          color="primary"
+          aria-label="Scroll to Top"
+          onClick={scrollToTop}
+          sx={{ position: "fixed", bottom: 16, right: 16 }}
+        >
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </Zoom>
     </Box>
   );
 }

@@ -12,6 +12,16 @@ const root = ReactDOM.createRoot(rootElement);
 const customTheme = createTheme({
   palette: {
     mode: "dark",
+    primary: {
+      main: "#ffd000ff", // Sunset orange
+    },
+    secondary: {
+      main: "#f53500ff", // Rich orange
+    },
+    background: {
+      default: "#121212", // Page background
+      paper: "#1d1d1d", // Surface elements
+    },
   },
 });
 root.render(

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
+import ReactPlayer from "react-player";
 import { Card, Box } from "@mui/material";
 
 function extractYoutubeId(url) {
@@ -8,70 +9,11 @@ function extractYoutubeId(url) {
   return match ? match[1] : null;
 }
 
-export default function YouTubeVideo({
-  video,
-  title = "Anime Video",
-  onEnded,
-}) {
-  const playerRef = useRef(null);
+export default function YouTubeVideo({ video = "", onEnded = () => {} }) {
   const videoId = extractYoutubeId(video);
-
-  useEffect(() => {
-    if (!videoId) return;
-
-    // Carga la API de YouTube si no está cargada
-    if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.body.appendChild(tag);
-    }
-
-    // Espera a que la API esté lista
-    window.onYouTubeIframeAPIReady = () => {
-      if (playerRef.current) {
-        playerRef.current = new window.YT.Player("yt-player", {
-          videoId,
-          events: {
-            onStateChange: (event) => {
-              // 0 significa que terminó el video
-              if (event.data === window.YT.PlayerState.ENDED && onEnded) {
-                onEnded();
-              }
-            },
-          },
-          playerVars: {
-            autoplay: 1,
-          },
-        });
-      }
-    };
-
-    // Si la API ya está cargada
-    if (window.YT && window.YT.Player) {
-      if (playerRef.current) {
-        playerRef.current = new window.YT.Player("yt-player", {
-          videoId,
-          events: {
-            onStateChange: (event) => {
-              if (event.data === window.YT.PlayerState.ENDED && onEnded) {
-                onEnded();
-              }
-            },
-          },
-          playerVars: {
-            autoplay: 1,
-          },
-        });
-      }
-    }
-
-    // Limpieza
-    return () => {
-      if (playerRef.current && playerRef.current.destroy) {
-        playerRef.current.destroy();
-      }
-    };
-  }, [videoId, onEnded]);
+  const videoUrl = videoId
+    ? `https://www.youtube.com/watch?v=${videoId}`
+    : null;
 
   return (
     <Card sx={{ marginTop: 2, marginLeft: 1, marginRight: 1 }}>
@@ -84,18 +26,47 @@ export default function YouTubeVideo({
           overflow: "hidden",
         }}
       >
-        <div
-          id="yt-player"
-          ref={playerRef}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            border: 0,
-          }}
-        />
+        {videoUrl ? (
+          <ReactPlayer
+            src={videoUrl}
+            width="100%"
+            height="100%"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+            // controls
+            playing={true}
+            onEnded={onEnded}
+          />
+        ) : (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "#1d1d1d",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              // padding: 2,
+            }}
+          >
+            <img
+              src="logo.png"
+              alt="Anime Logo"
+              style={{
+                maxWidth: "80%",
+                maxHeight: "80%",
+                objectFit: "contain",
+                borderRadius: 8,
+              }}
+            />
+          </Box>
+        )}
       </Box>
     </Card>
   );

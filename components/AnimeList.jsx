@@ -105,14 +105,37 @@ export default function AnimeList({ entry = "" }) {
     scrollToTop();
   }, [sortedAnimes]);
 
+  const videoRef = React.useRef(null);
+  const [videoHeight, setVideoHeight] = React.useState(0);
+  useEffect(() => {
+    const updateHeight = () => {
+      if (videoRef.current) {
+        const rect = videoRef.current.getBoundingClientRect();
+        setVideoHeight(rect.height);
+      }
+    };
+
+    updateHeight(); // Medición inicial
+
+    window.addEventListener("resize", updateHeight); // Actualización dinámica
+
+    return () => {
+      window.removeEventListener("resize", updateHeight); // Limpieza
+    };
+  }, []); // Sin dependencia de video
+
   return (
     <Box sx={{ maxWidth: 1000, margin: "auto" }}>
-      {selected?.video && (
-        <YouTubeVideo video={selected.video} onEnded={handleVideoEnded} />
-      )}
+      <div ref={videoRef}>
+        <YouTubeVideo
+          video={selected?.video || ""}
+          onEnded={handleVideoEnded}
+        />
+      </div>
+
       <List
         ref={listRef}
-        height={window.innerHeight - 100}
+        height={window.innerHeight - videoHeight - 75} // Ajusta la altura para el video y la barra de navegación
         itemCount={sortedAnimes.length}
         itemSize={140}
         width={"100%"}

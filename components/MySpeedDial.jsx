@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import SortByAlphaIcon from "@mui/icons-material/SortByAlpha";
 import EventIcon from "@mui/icons-material/Event";
 import ExplicitIcon from "@mui/icons-material/Explicit";
+import StarIcon from "@mui/icons-material/Star";
 
 const getColor = (currentKey, selectedKey, order) => {
   if (currentKey !== selectedKey) return "disabled";
@@ -16,6 +17,7 @@ const sortOptions = [
   { key: "name", label: "Name", icon: SortByAlphaIcon },
   { key: "release", label: "Release Date", icon: EventIcon },
   { key: "episodes", label: "Episodes", icon: ExplicitIcon },
+  { key: "punctuation", label: "Score", icon: StarIcon },
 ];
 export default function MySpeedDial({
   sortKey = null,

@@ -84,6 +84,8 @@ export default function AnimeList({ entry = "" }) {
           image={anime.image || ""}
           selected={selectedAnime}
           setSelected={setSelectedAnime}
+          score={anime.punctuation || 0}
+          play={anime.video ? true : false}
         />
       </div>
     );

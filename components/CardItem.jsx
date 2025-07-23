@@ -6,8 +6,10 @@ import {
   CardMedia,
   Typography,
   CardActionArea,
-  Divider,
 } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+// import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const imageSize = 128;
 
@@ -32,6 +34,8 @@ const CardItem = ({
   description = "",
   selected = null,
   setSelected = () => {},
+  score = 0,
+  play = false,
 }) => {
   return (
     <Card
@@ -58,6 +62,19 @@ const CardItem = ({
             image={image}
             alt={name}
           />
+          {play && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: imageSize / 2,
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <PlayArrowIcon sx={{ fontSize: 40, opacity: 0.8 }} />
+            </Box>
+          )}
+
           <CardContent
             sx={{
               marginTop: -0.5,
@@ -77,7 +94,11 @@ const CardItem = ({
             >
               {name}
             </Typography>
-            <Divider />
+            <LinearProgress
+              variant="determinate"
+              value={score > 3 ? (score - 3) * 14.3 : 0}
+              sx={{ height: 2 }}
+            />
             <Typography
               variant="subtitle2"
               component="div"

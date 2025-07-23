@@ -6,10 +6,11 @@ import {
   CardMedia,
   Typography,
   CardActionArea,
+  IconButton,
+  LinearProgress,
 } from "@mui/material";
-import LinearProgress from "@mui/material/LinearProgress";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-// import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const imageSize = 128;
 
@@ -37,6 +38,32 @@ const CardItem = ({
   score = 0,
   play = false,
 }) => {
+  const [favorites, setFavorites] = React.useState(() => {
+    try {
+      const data = localStorage.getItem("favorites");
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  });
+  const toggleFavorite = (id) => {
+    try {
+      // Lee los favoritos actuales desde localStorage
+      const data = localStorage.getItem("favorites");
+      const current = data ? JSON.parse(data) : [];
+
+      // Actualiza la lista según si el id ya existe
+      const updated = current.includes(id)
+        ? current.filter((f) => f !== id)
+        : [...current, id];
+
+      // Guarda en localStorage y sincroniza con estado
+      localStorage.setItem("favorites", JSON.stringify(updated));
+      setFavorites(updated);
+    } catch (error) {
+      console.error("Error updating favorites:", error);
+    }
+  };
   return (
     <Card
       sx={{
@@ -141,6 +168,23 @@ const CardItem = ({
           </CardContent>
         </Box>
       </CardActionArea>
+      <IconButton
+        aria-label="Add to favorites"
+        onClick={(e) => {
+          e.stopPropagation(); // Para evitar que el CardActionArea se dispare
+          toggleFavorite(id);
+        }}
+        sx={{
+          position: "absolute",
+          top: 8,
+          left: 8,
+        }}
+      >
+        {" "}
+        <FavoriteIcon
+          sx={{ color: favorites.includes(id) ? "red" : "inherit" }}
+        />
+      </IconButton>
     </Card>
   );
 };

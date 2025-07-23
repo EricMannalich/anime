@@ -10,6 +10,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Zoom from "@mui/material/Zoom";
 import { FixedSizeList as List } from "react-window";
 import useListScrollTrigger from "./useListScrollTrigger";
+import Grid from "@mui/material/Grid";
 
 export default function AnimeList({ entry = "" }) {
   const [selectedAnime, setSelectedAnime] = React.useState(() => {
@@ -125,23 +126,28 @@ export default function AnimeList({ entry = "" }) {
   }, []); // Sin dependencia de video
 
   return (
-    <Box sx={{ maxWidth: 1000, margin: "auto" }}>
-      <div ref={videoRef}>
-        <YouTubeVideo
-          video={selected?.video || ""}
-          onEnded={handleVideoEnded}
-        />
-      </div>
-
-      <List
-        ref={listRef}
-        height={window.innerHeight - videoHeight - 75} // Ajusta la altura para el video y la barra de navegación
-        itemCount={sortedAnimes.length}
-        itemSize={140}
-        width={"100%"}
-      >
-        {Row}
-      </List>
+    <Box sx={{ maxWidth: 1600, margin: "auto" }}>
+      <Grid container spacing={0}>
+        <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
+          <div ref={videoRef}>
+            <YouTubeVideo
+              video={selected?.video || ""}
+              onEnded={handleVideoEnded}
+            />
+          </div>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
+          <List
+            ref={listRef}
+            height={window.innerHeight - 75}
+            itemCount={sortedAnimes.length}
+            itemSize={140}
+            width={"100%"}
+          >
+            {Row}
+          </List>
+        </Grid>
+      </Grid>
       <MySpeedDial
         sortKey={sortKey}
         setSortKey={setSortKey}

@@ -37,7 +37,7 @@ export default function YouTubeVideo({ video = "", onEnded = () => {} }) {
               left: 0,
             }}
             // controls
-            playing={true}
+            playing={false}
             onEnded={onEnded}
           />
         ) : (
